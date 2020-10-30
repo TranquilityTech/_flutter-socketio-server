@@ -2,6 +2,8 @@ const express = require('express');
 
 var cron = require('node-cron');
 const app = express();
+const cors = require('cors');
+app.use(cors());
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 
