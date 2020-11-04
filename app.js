@@ -18,19 +18,19 @@ const nsp = io.of('/room');
 
 //Server will automatically emit/send message every 10 sec,
 //to test if the message is delivered to the Flutter App.
+
+/*
 setInterval(() => {
     var dt = new Date();
     nsp.emit('new_message', {
         date: dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds()
     });
 }, 1000);
+*/
 
 nsp.on('connection', (socket) => {
+    // console.log(socket.request._query.token);
     connections.push(socket);
-    console.log('sockets is connected', connections.length);
-    nsp.emit('socket_connections', {
-        socket: connections.length
-    });
 
     socket.on('disconnect', () => {
         connections.splice(connections.indexOf(socket), 1);
@@ -40,13 +40,11 @@ nsp.on('connection', (socket) => {
         console.log('sockets is connected', connections.length);
     });
 
-    socket.on('send message', (message) => {
+    socket.on('send_message', (message) => {
         console.log('Message is received :', message);
         var dt = new Date();
         nsp.emit('new_message', {
-            date: dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds(),
-            msg: message.msg,
-            id: message.id
+            content: message.content
         });
     });
 });
